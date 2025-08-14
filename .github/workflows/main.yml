@@ -44,7 +44,8 @@ jobs:
           -d testData.csv \                                 # Data file for data-driven testing
           -r cli,htmlextra                                  # Report formats: CLI output + HTML report
 
-      - name: bewman  Report
+      - name: Newman  Report
+        if: always() 
         uses: actions/upload-artifact@v4.6.2
         with:
           name: Newman Report
