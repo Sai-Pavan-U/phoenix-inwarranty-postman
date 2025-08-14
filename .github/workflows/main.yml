@@ -1,0 +1,45 @@
+# -------------------------------
+# GitHub Actions Workflow: Postman Collection Workflow
+# Purpose: Run Postman API tests using Newman in GitHub Actions
+# Triggered by: Push to main, manual run, and scheduled runs
+# -------------------------------
+
+name: Postman Collection Workflow  # Name of the workflow shown in GitHub Actions
+
+on:
+  push:                # Trigger workflow when code is pushed
+    branches: [main]   # Runs only when pushing to the 'main' branch
+  workflow_dispatch:   # Allows manual trigger from GitHub Actions UI
+  schedule:            # Scheduled runs using cron expressions
+    - cron: "30 02 * * *" # Runs every day at 02:30 UTC (9 AM IST)
+    - cron: "00 14 * * *" # Runs every day at 14:00 UTC (9:30 PM IST)
+
+jobs:
+  run-postman-tests:    # Job name (can be anything)
+    runs-on: ubuntu-latest # The job will run on the latest Ubuntu VM provided by GitHub
+
+    steps:
+      # Step 1: Check out the code from the repository
+      - name: Checkout the code
+        uses: actions/checkout@v4.2.2
+
+      # Step 2: Install Node.js & npm (needed to run Newman)
+      - name: Install Node.js and npm
+        uses: actions/setup-node@v3.9.1
+        with: 
+          node-version: '22'   # Specify the Node.js version
+
+      # Step 3: Install Newman & HTML Extra reporter globally
+      - name: Install newman and Html-extra globally
+        run: | # '|' allows multiple shell commands
+             npm install -g newman                    # Install Newman CLI
+             npm install -g newman-reporter-htmlextra # Install HTML report generator
+
+      # Step 4: Run the Postman collection using Newman
+      - name: Run the Postman collection with newman
+        run: |
+          newman run 'Inwarranty-flow Collection.postman_collection.json' \
+          -e QA.postman_environment.json \                 # Postman environment file
+          -g workspace.postman_globals.json \               # Optional global variables file
+          -d testData.csv \                                 # Data file for data-driven testing
+          -r cli,htmlextra                                  # Report formats: CLI output + HTML report
