@@ -42,7 +42,7 @@ jobs:
           -e QA.postman_environment.json \                 # Postman environment file
           -g workspace.postman_globals.json \               # Optional global variables file
           -d testData.csv \                                 # Data file for data-driven testing
-          -r cli,htmlextra                                  # Report formats: CLI output + HTML report
+          -r cli,htmlextra                             # Report formats: CLI output + HTML report
 
       - name: Newman  Report
         if: always() 
