@@ -1,43 +1,50 @@
 name: Phoeinix Practice
+
 on:
- push: 
-   branches: [main]
- workflow_dispatch:
- schedule:
-    - cron: '01 03 * * *' # 8:30 am ist
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '01 03 * * *' # 8:30 am IST
+
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+
     steps: 
-      - name: checkout code
+      - name: Checkout code
         uses: actions/checkout@v3
         
       - name: Install Node.js and npm
-        uses: actions/setup-node@v3.9.1
-      - name: Install newman
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install newman & reporter
         run: |
-            npm install -g newman
-            npm install -g newman-reporter-htmlextra
-      - name: Run the Postman collection with newman
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Run Postman collection with newman
         run: |
-          newman run 'Inwarranty-flow Collection.postman_collection.json' \
-          -e QA.postman_environment.json \                
-          -g workspace.postman_globals.json \               
-          -d testData.csv \                                 
-          -r cli,htmlextra
-      - name: Upload a Build Artifact
+          mkdir -p newman
+          newman run "Inwarranty-flow Collection.postman_collection.json" \
+            -e QA.postman_environment.json \
+            -g workspace.postman_globals.json \
+            -d testData.csv \
+            -r cli,htmlextra \
+            --reporter-htmlextra-export newman/report.html
+
+      - name: Upload Newman HTML Report
         if: always()
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v4
         with: 
           name: newman-html-report
-          path: newman/*.html
-      - name: Creating github page branch
+          path: newman/report.html
+
+      - name: Publish to GitHub Pages
         if: always()
-        uses: peaceiris/actions-gh-pages@v4.0.0
+        uses: peaceiris/actions-gh-pages@v4
         with: 
-          github_token: ${{ screts.GITHUB_TOKEN }}
-          publish_dir: newman/
-        
-   
-
-
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./newman
