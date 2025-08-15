@@ -33,7 +33,7 @@ jobs:
             -g workspace.postman_globals.json \
             -d testData.csv \
             -r cli,htmlextra \
-            --reporter-htmlextra-export newman/report.html
+            --reporter-htmlextra-export newman/index.html
 
       - name: Upload Newman HTML Report
         if: always()
