@@ -59,7 +59,7 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORDS }}
           subject: Phoenix Inwarranty Flow Execution Notification
           to: saipavanuppalapati789@gmail.com
-          from: ${{ secrets.USERNAME }}
+          from: ${{ secrets.EMAIL_USERNAME }}
           body: |
                Hi,
                postman flow executed
