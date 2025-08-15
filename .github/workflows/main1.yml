@@ -24,15 +24,13 @@ jobs:
           -e QA.postman_environment.json \                
           -g workspace.postman_globals.json \               
           -d testData.csv \                                 
-          -r cli,htmlextra      
-          
+          -r cli,htmlextra
       - name: Upload a Build Artifact
         if: always()
         uses: actions/upload-artifact@v4.6.2
         with: 
           name: newman-html-report
           path: newman/*.html
-          
       - name: Creating github page branch
         if: always()
         uses: peaceiris/actions-gh-pages@v4.0.0
