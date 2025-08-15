@@ -48,3 +48,19 @@ jobs:
         with: 
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./newman
+  
+      - name: Send email
+        if: always()
+        uses: dawidd6/action-send-mail@v6
+        with:
+          server_address: smtp.gmail.com # optional
+          server_port: 465 
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORDS }}
+          subject: Phoenix Inwarranty Flow Execution Notification
+          to: saipavanuppalapati789@gmail.com
+          from: ${{ secrets.USERNAME }}
+          body: |
+               Hi,
+               postman flow executed
+               is: https://sai-pavan-u.github.io/phoenix-inwarranty-postman/
