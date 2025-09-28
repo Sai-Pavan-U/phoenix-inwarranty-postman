@@ -10,9 +10,9 @@ on:
   push:                # Trigger workflow when code is pushed
     branches: [main]   # Runs only when pushing to the 'main' branch
   workflow_dispatch:   # Allows manual trigger from GitHub Actions UI
-  schedule:            # Scheduled runs using cron expressions
-    - cron: "30 02 * * *" # Runs every day at 02:30 UTC (9 AM IST)
-    - cron: "00 14 * * *" # Runs every day at 14:00 UTC (9:30 PM IST)
+  # schedule:            # Scheduled runs using cron expressions
+  #   - cron: "30 02 * * *" # Runs every day at 02:30 UTC (9 AM IST)
+  #   - cron: "00 14 * * *" # Runs every day at 14:00 UTC (9:30 PM IST)
 
 jobs:
   run-postman-tests:    # Job name (can be anything)
